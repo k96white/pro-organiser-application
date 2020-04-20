@@ -1,70 +1,110 @@
-.addCardBox {
-  border: 1px solid black;
-  border-radius: 5px;
-  width: 100%;
-  background-color: white;
-}
-.addCardBox:hover {
-  cursor: pointer;
-  background-color: lightgreen;
-  font-weight: 600;
+.item {
+    border-radius: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    padding: 10px;
 }
 
-.cardHeader {
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-bottom: 5%;
-  padding-left: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background-color: white;
-}
-.cardHeader:hover {
-  cursor: pointer;
-  background-color: lightgoldenrodyellow;
-  border: 2px solid black;
-  font-weight: 600;
-}
-.cardContent {
-  display: flex;
-  justify-content: space-between;
-  width: 95%;
+.text {
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: capitalize;
 }
 
-.cardMembers {
-  border-radius: 100%;
-  margin-left: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-align: center;
-  width: 140px;
-  height: 140px;
-  font-size: 16px;
-  font-weight: 600;
-  background-color: rgb(226, 186, 186);
+.actions {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
 }
-.cardDetailContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 2%;
-  margin-top: 2%;
-}
-.cardDetailHeader {
-  display: flex;
-  justify-content: space-between;
 
-  width: 90%;
+.team {
+    justify-self: flex-end;
+    display: flex;
 }
-@media only screen and (max-width:500px){
-   
-  .editAndArcbtn{
+
+.item:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.modalHeader {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #a8a8a8;
+    padding-bottom: 5px;
+}
+
+.modalClose {
+    position: absolute;
+    top: -80px;
+    right: -40px;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 30px;
+    cursor: pointer;
+    color: rgb(255, 74, 74);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 300;
+    color: #3998e6;
+    text-transform: capitalize;
+}
+
+.meta {
+    margin-top: 4px;
+    font-size: 15px;
+    color: rgb(82, 82, 82);
+    font-weight: 400;
+}
+
+.btnGroup {
+    align-self: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnGroup button {
+    font-size: 14px;
+}
+
+.btnGroup button:not(:last-child) {
+    margin-right: 8px;
+}
+
+.modalBody {
+    padding: 20px 0;
+}
+
+.det {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  
+    gap: 8px;
+}
+
+.det:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.det header {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.det div {
+    font-size: 15px;
+    color: #444;
+    font-weight: 300;
+}
+
+.detTeam {
+    display: flex;
 }
