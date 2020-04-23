@@ -1,22 +1,35 @@
 import React from 'react';
-import './Loader.css'
+import './Loader.css';
 
-
-function Loader() {
-    return (
-       
-        <div id="fountainG">
-            <div id="fountainG_1" className="fountainG"></div>
-            <div id="fountainG_2" className="fountainG"></div>
-            <div id="fountainG_3" className="fountainG"></div>
-            <div id="fountainG_4" className="fountainG"></div>
-            <div id="fountainG_5" className="fountainG"></div>
-            <div id="fountainG_6" className="fountainG"></div>
-            <div id="fountainG_7" className="fountainG"></div>
-            <div id="fountainG_8" className="fountainG"></div>
+export const Loader = () => {
+  return (
+    <div className="loader-container">
+      <div className="boxes">
+        <div className="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-        
-    )
-}
-
-export default Loader;
+        <div className="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div className="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div className="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  );
+};
