@@ -1,178 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import { Modal } from '../../common/modal/Modal';
-import styles from './AddCard.module.css';
-import commonStyles from './../../common/styles/styles.module.css';
-import { Alert } from '../../common/alert/Alert';
+import React, { Component } from 'react';
+import styles from './AddCard.css';
+import boardStyles from './../../pages/Board/Board.css';
+import createBoardStyles from './../../pages/CreateBoard/CreateBoard.css';
 
-export const AddCard = ({
-  board,
-  handleCardAdd,
-  handleClose,
-  card,
-  isAdd = true,
-  handleEdit
-}) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [team, setTeam] = useState([]);
-  const [error, setError] = useState(null);
+import FormElements from './../FormElements/FormElements';
 
-  useEffect(() => {
-    if (card) {
-      setTitle(card.title);
-      setDescription(card.description);
-      setTeam(card.teamMembers);
-      const date = new Date(card.date);
-      setDueDate(date.toISOString().substr(0, 10));
-    }
-  }, [isAdd, card]);
-
-  function onSelectChange(e) {
-    const values = [...e.target.selectedOptions].map(opt => opt.value);
-    setTeam(values);
-  }
-
-  function onAdd() {
-    if (!title || !description || !dueDate || team.length === 0) {
-      setError('All the fields are required');
-      return;
-    }
-
-    const checkDateBool = checkDate(dueDate);
-
-    if (checkDateBool) {
-      setError('Cannot select a past date.');
-      return;
+class AddCard extends Component {    
+    state = {
+        formElements: [
+            {
+                type: 'text',
+                placeholder: 'e.g. Add a new icon',
+                label: 'Enter a title for your task',
+                id: 'title',
+                value: null
+            },
+            {
+                type: 'select',
+                placeholder: 'Choose members for this task',
+                label: 'Choose members for this task (select multiple, if needed)',
+                id: 'members',
+                value: null
+            },
+            {
+                type: 'textarea',
+                placeholder: 'Add your description here',
+                label: 'Add the description for your task',
+                id: 'description',
+                value: null
+            },
+            {
+                type: 'date',
+                placeholder: 'Select the due-date',
+                label: 'Select the due-date for this task',
+                id: 'due_date',
+                value: null
+            }
+        ],
+        incompleteForm: false,
+        updateStateWithProps: false
     }
 
-    setError(null);
+    static getDerivedStateFromProps = (props, state) =>  {
+        if(props.editCard && !state.updateStateWithProps) {
+            let formElements = [...state.formElements];
+            let cardData = props.cardData.card[0];
+            for(let element of formElements) {
+                if(element.id === 'due_date') {
+                    let date = new Date(cardData[element.id]);
+                    let finalDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                    element.value = finalDate;
+                } else {
+                    element.value = cardData[element.id];
+                }
 
-    const card = createCard(dueDate, title, team, description);
-
-    handleCardAdd(card);
-  }
-
-  function onEdit() {
-    if (!title || !description || !dueDate || team.length === 0) {
-      setError('All the fields are required');
-      return;
+            }
+            state.formElements = formElements;
+            state.updateStateWithProps = true;
+        }
+        return state;
     }
 
-    const checkDateBool = checkDate(dueDate);
-
-    if (checkDateBool) {
-      setError('Cannot select a past date.');
-      return;
+    addCardHandler = () => {
+        let values = {};
+        let formElements = this.state.formElements
+        for(let key in formElements) {
+            values[formElements[key].id] = formElements[key].value;
+        }
+        this.props.addCard(values);
     }
 
-    setError(null);
+    formChangeHandler = (id, value) => {
+        let updatedFormElements = [...this.state.formElements].map(ele => {
+            if(ele.id === id) {
+                ele.value = value;
+                return ele;
+            } else {
+                return ele;
+            }
+        })
+        this.setState({
+            formElements: updatedFormElements
+        })
+    }
 
-    const card = createCard(dueDate, title, team, description);
+    render() {
+        let formElements = this.state.formElements.map(element => {
+            const ref = React.createRef();
+            return <FormElements element={element} reference={ref} key={element.id} options={element.id === 'members' && this.props.members} changed={this.formChangeHandler} />
+        })
 
-    handleEdit(card);
-  }
-
-  return (
-    <Modal>
-      <div className={styles.modalHead}>
-        <div>{isAdd ? 'Add Card' : 'Edit Card'}</div>
-        <div className={styles.close} onClick={handleClose}>
-          &times;
-        </div>
-      </div>
-      {error && (
-        <Alert
-          children={error}
-          type={'error'}
-          canClose={() => setError(null)}
-        />
-      )}
-      <div className={styles.modalBody}>
-        <div className={styles.formField}>
-          <label htmlFor="title">Enter the title for your task</label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="eg. Add a new Icon"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-        </div>
-        <div className={styles.formField}>
-          <label htmlFor="title">
-            Choose members for this task(select multiple, if needed)
-          </label>
-          <select
-            name="members"
-            id="members"
-            multiple={true}
-            value={team}
-            onChange={onSelectChange}
-          >
-            {board.teamMembers.map(member => (
-              <option value={member} key={member}>
-                {member}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={styles.formField}>
-          <label htmlFor="title">Add the descriptions for your task</label>
-          <input
-            type="text"
-            name="title"
-            id="description"
-            placeholder="Add your description here"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-        </div>
-        <div className={styles.formField}>
-          <label htmlFor="title">Select the due date for this task</label>
-          <input
-            type="date"
-            name="title"
-            id="due_date"
-            value={dueDate}
-            onChange={e => setDueDate(e.target.value)}
-          />
-        </div>
-        <div className={styles.formField}>
-          {isAdd ? (
-            <button className={commonStyles.info} id="CreateCard" onClick={onAdd}>
-              Add Card
-            </button>
-          ) : (
-            <button className={commonStyles.info} onClick={onEdit}>
-              Edit Card
-            </button>
-          )}
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-function checkDate(dueDate) {
-  const today = new Date().getTime();
-  const dueDateMili = new Date(dueDate).getTime();
-
-  if (dueDateMili < today) {
-    return true;
-  }
-
-  return false;
+        return (
+            <div className={styles.AddCard}>
+                <p className={boardStyles.BoardTitle}>{this.props.editCard ? 'Edit Card' : 'Add Card'}</p>
+                { formElements }
+                <button id='CreateCard'className={createBoardStyles.CreateButton} onClick={this.addCardHandler}>{this.props.editCard ? 'Edit Card' : 'Add Card'}</button>
+            </div>
+        )
+    }
 }
 
-function createCard(dueDate, title, teamMembers, description) {
-  const date = new Date(dueDate).getTime();
-  return {
-    title,
-    description,
-    teamMembers,
-    date,
-    isArchive: false
-  };
-}
+export default AddCard;
