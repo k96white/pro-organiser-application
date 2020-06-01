@@ -18,7 +18,7 @@ function Card(props) {
   const [team, setTeam] = useState([]);
   const [descrptn, setDescrptn] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [showCard, setShowCard] = useState(false);
+  //const [showCard, setShowCard] = useState(false);
 
   // to get column data
   const [cardData, setCardData] = useState({});

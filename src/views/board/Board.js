@@ -9,8 +9,8 @@ import Loader from "../../common/loader/Loader";
 
 function Board(props) {
   const name = props.match.params.boardName;
-  // const [type, setType] = useState(props.location.state.type);
-  const [members, setMembers] = useState(props.location.state.members);
+
+  const members = props.location.state.members;
   const [columnData, setColumnData] = useState({});
   const [showColumn, setShowColumn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

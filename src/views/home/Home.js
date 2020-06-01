@@ -31,10 +31,10 @@ function Home() {
       {isLoading ? (
         <Loader></Loader>
       ) : (
-        <header>
-          <h3 className={styles.header}>Boards</h3>
-          <br />
+        <>
           <div className={styles.boardContainer}>
+            <h3 className={styles.header}>Boards</h3>
+            <br />
             {showBoard ? (
               <div className={styles.boardList}>
                 {boardData &&
@@ -66,7 +66,7 @@ function Home() {
               </p>
             )}
           </div>
-        </header>
+        </>
       )}
     </div>
   );
